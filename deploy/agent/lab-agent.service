@@ -1,0 +1,16 @@
+[Unit]
+Description=Lab Teaching Agent (机房学生机 Agent)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+# 修改为实际服务器地址
+Environment=LAB_SERVER=ws://192.168.10.1:8090/agent/ws
+Environment=LAB_BOOT_MODE=本地
+ExecStart=/usr/local/bin/lab-agent
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

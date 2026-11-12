@@ -1,0 +1,30 @@
+[package]
+name = "lab-agent"
+version = "0.2.0"
+edition = "2021"
+description = "机房教学管理系统 - 学生机跨平台 Agent（心跳/WS/指令）"
+
+[features]
+# TLS 支持（ws→wss / http→https）。默认开启；
+# 龙芯(loongarch64)等 ring 无法交叉编译的架构可用 --no-default-features 构建纯内网版本
+default = ["tls"]
+tls = ["reqwest/rustls-tls", "tokio-tungstenite/rustls-tls-webpki-roots"]
+
+[dependencies]
+tokio = { version = "1", features = ["full"] }
+tokio-tungstenite = { version = "0.21", default-features = false, features = ["connect"] }
+futures-util = "0.3"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+url = "2"
+hostname = "0.4"
+reqwest = { version = "0.12", default-features = false, features = ["json", "stream", "multipart"] }
+
+# Linux/国产OS 平台依赖（Windows 走 platform.rs 的 Win32 运行时加载，零链接依赖）
+[target.'cfg(unix)'.dependencies]
+libc = "0.2"
+x11-dl = "2.21"
+
+[profile.release]
+opt-level = 2
+strip = true

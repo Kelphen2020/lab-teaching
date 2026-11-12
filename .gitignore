@@ -1,0 +1,43 @@
+# Build artifacts
+dist/
+frontend/dist/
+agent/target/
+
+# Dependencies
+node_modules/
+frontend/node_modules/
+
+# Backups and data
+backups/
+*.sql.gz
+*.db
+*.sqlite
+
+# IDE / OS
+.idea/
+.vscode/
+*.swp
+.DS_Store
+
+# Env / secrets
+.env
+.env.*
+*.key
+*.pem
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Rust
+agent/Cargo.lock
+backend/configs/production.yaml
+backend/data/license.json
+
+# Internal artifacts
+*.bak
+*.bak_*
+*.tar.gz
+*.log
+overnight-*.md

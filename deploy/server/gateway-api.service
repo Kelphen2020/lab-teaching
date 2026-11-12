@@ -1,0 +1,21 @@
+[Unit]
+Description=Lab Teaching Gateway API (机房教学管理系统后端)
+After=network-online.target postgresql.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=lab
+Group=lab
+WorkingDirectory=/opt/lab-teaching
+ExecStart=/opt/lab-teaching/gateway-api -c /opt/lab-teaching/configs/production.yaml
+Restart=always
+RestartSec=5
+# 资源限制
+LimitNOFILE=65535
+# 日志
+StandardOutput=append:/opt/lab-teaching/logs/gateway-api.log
+StandardError=append:/opt/lab-teaching/logs/gateway-api.err.log
+
+[Install]
+WantedBy=multi-user.target

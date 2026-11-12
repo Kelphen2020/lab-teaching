@@ -1,0 +1,31 @@
+server:
+  port: ":8090"
+  mode: release
+
+database:
+  # 数据库类型: postgres(默认) / kingbase(人大金仓) / dm(达梦)
+  type: postgres
+  host: localhost
+  port: "5432"
+  user: postgres
+  password: CHANGE_ME_DB_PASSWORD
+  dbname: lab_teaching
+  sslmode: disable
+
+jwt:
+  # 生产环境务必修改为随机字符串(建议32位以上)
+  secret: CHANGE_ME_JWT_SECRET
+  expire_hours: 24
+
+pool:
+  db_max_open: 100
+  db_max_idle: 20
+  db_max_life_sec: 1800
+  ws_send_buf: 256
+  ws_read_limit_mb: 4
+
+security:
+  login_max_fail: 5
+  login_lock_min: 15
+  rate_limit_rps: 500
+  password_min_len: 8

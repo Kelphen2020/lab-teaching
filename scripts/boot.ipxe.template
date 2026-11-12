@@ -1,0 +1,34 @@
+#!ipxe
+# ============================================================
+# 机房教学管理系统 - iPXE 引导脚本模板
+# 部署位置: HTTP 镜像仓库 /var/www/html/ipxe/boot.ipxe
+# 学生机 PXE -> TFTP 下载 ipxe.efi -> 链式加载本脚本
+# ============================================================
+
+set server YOUR_SERVER_IP
+set mirror http://${server}/images
+
+echo 机房教学管理系统 - 无盘引导
+echo 服务器: ${server}
+echo 本机 MAC: ${net0/mac}
+echo 本机 IP:  ${ip}
+
+# 按机房/网段选择不同系统镜像（示例）
+iseq ${net0/ip} 192.168.10.* && set room room1 ||
+iseq ${net0/ip} 192.168.20.* && set room room2 ||
+set room default
+
+echo 识别机房: ${room}
+
+# 方式一: iSCSI 无盘根文件系统（推荐，性能好）
+# sanboot --no-describe iscsi:${server}::::iqn.2026-07:lab:${net0/mac}
+
+# 方式二: NFS root（兼容性好）
+# kernel ${mirror}/${room}/vmlinuz root=/dev/nfs nfsroot=${server}:/srv/nfs/${room},vers=3 ip=dhcp ro
+# initrd ${mirror}/${room}/initrd.img
+# boot
+
+# 方式三: 内存加载 Live 系统（首次部署/恢复用）
+kernel ${mirror}/${room}/vmlinuz ip=dhcp ro quiet
+initrd ${mirror}/${room}/initrd.img
+boot || echo 引导失败，5秒后重试 && sleep 5 && goto start
